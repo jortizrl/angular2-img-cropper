@@ -1,4 +1,4 @@
-import {Component, Input, Renderer2, ViewChild, ElementRef, Output, EventEmitter, Type, AfterViewInit, OnChanges, OnDestroy, SimpleChanges} from '@angular/core';
+import {Component, Input, Renderer, ViewChild, ElementRef, Output, EventEmitter, Type, AfterViewInit, OnChanges, OnDestroy, SimpleChanges} from '@angular/core';
 import {ImageCropper} from './imageCropper';
 import {CropperSettings} from './cropperSettings';
 import {Exif} from './exif';
@@ -39,12 +39,12 @@ export class ImageCropperComponent implements AfterViewInit, OnChanges, OnDestro
     public croppedHeight:number;
     public intervalRef:number;
     public raf:number;
-    public renderer:Renderer2;
+    public renderer:Renderer;
     public windowListener: EventListenerObject;
 
     private isCropPositionUpdateNeeded:boolean;
 
-    constructor(renderer:Renderer2) {
+    constructor(renderer:Renderer) {
         this.renderer = renderer;
     }
 
@@ -56,12 +56,12 @@ export class ImageCropperComponent implements AfterViewInit, OnChanges, OnDestro
         }
 
         if (this.settings.cropperClass) {
-            this.renderer.setAttribute(canvas, 'class', this.settings.cropperClass);
+            this.renderer.setElementAttribute(canvas, 'class', this.settings.cropperClass);
         }
 
         if (!this.settings.dynamicSizing) {
-            this.renderer.setAttribute(canvas, 'width', this.settings.canvasWidth.toString());
-            this.renderer.setAttribute(canvas, 'height', this.settings.canvasHeight.toString());
+            this.renderer.setElementAttribute(canvas, 'width', this.settings.canvasWidth.toString());
+            this.renderer.setElementAttribute(canvas, 'height', this.settings.canvasHeight.toString());
         } else {
             this.windowListener = this.resize.bind(this);
             window.addEventListener('resize', this.windowListener);
@@ -74,7 +74,7 @@ export class ImageCropperComponent implements AfterViewInit, OnChanges, OnDestro
         this.cropper.prepare(canvas);
     }
 
-    public ngOnChanges(changes:SimpleChanges):void {
+    public ngOnChanges(changes:any):void {
         if (this.isCropPositionChanged(changes)) {
             this.cropper.updateCropPosition(this.cropPosition.toBounds());
             if (this.cropper.isImageSet()) {
@@ -158,12 +158,12 @@ export class ImageCropperComponent implements AfterViewInit, OnChanges, OnDestro
 
     public reset():void {
         this.cropper.reset();
-        this.renderer.setAttribute(this.cropcanvas.nativeElement, 'class', this.settings.cropperClass);
+        this.renderer.setElementAttribute(this.cropcanvas.nativeElement, 'class', this.settings.cropperClass);
         this.image.image = this.cropper.getCroppedImageHelper().src;
     }
 
     public setImage(image:HTMLImageElement, newBounds:any = null) {
-        this.renderer.setAttribute(this.cropcanvas.nativeElement, 'class', `${this.settings.cropperClass} ${this.settings.croppingClass}`);
+        this.renderer.setElementAttribute(this.cropcanvas.nativeElement, 'class', `${this.settings.cropperClass} ${this.settings.croppingClass}`);
         this.raf = window.requestAnimationFrame(() => {
             if (this.raf) {
                 window.cancelAnimationFrame(this.raf);

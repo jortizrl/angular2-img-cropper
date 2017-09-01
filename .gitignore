@@ -3,9 +3,6 @@ src/**/*.js.map
 src/**/*.d.ts
 src/**/*.js
 runtime/*.js
-index.js.map
-index.d.ts
-index.js
 #################
 ## Misc
 #################
@@ -16,9 +13,6 @@ build.xml
 node_modules/*
 npm-debug.log
 coverage
-dist/img-cropper-test-app.d.ts
-dist/img-cropper-test-app.js
-dist/img-cropper-test-app.js.map
 !karma.conf.js
 !karma-test-shim.js
 !make.js
